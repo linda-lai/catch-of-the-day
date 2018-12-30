@@ -18,8 +18,10 @@ class StorePicker extends Component {
     // 1. Stop the form from submitting
     event.preventDefault();
     // 2. Get the text from the form input
-    console.log(this);
+    const storeName = this.myInput.value.value;
     // 3. Change the page to /store/user-input
+    // Changes the URL without refreshing page or losing data using 'history.push()' (method is inherited from React Router)
+    this.props.history.push(`/store/${storeName}`)
   }
   render() {
     return(
