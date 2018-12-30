@@ -33,6 +33,7 @@ class StorePicker extends Component {
           ref={this.myInput}
           required
           placeholder="Store Name"
+          // getFunName is a helper method
           defaultValue={getFunName()}
         />
         <button type="submit">Visit Store</button>

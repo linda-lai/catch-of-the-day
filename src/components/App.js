@@ -5,12 +5,23 @@ import Inventory from './Inventory';
 import sampleFishes from '../sample-fishes';
 import Fish from './Fish';
 import { formatPrice } from '../helpers';
+import base from '../base';
 
 class App extends React.Component {
   state = {
     fishes: {},
     order: {}
   };
+
+  componentDidMount() {
+    const { params } = this.props.match;
+    this.ref = base.syncState(`${params.storeId}/fishes`, {
+      context: this,
+      state: 'fishes'
+    });
+    console.log('MOUNTED!')
+  }
+
   addFish = (fish) => {
     // 1. Take a copy of the existing state using an object spread
     const fishes = {...this.state.fishes};
@@ -31,7 +42,8 @@ class App extends React.Component {
     order[key] = order[key] + 1 || 1;
     // 3. Call setState to update our state object
     this.setState({ order });
-  } 
+  };
+
   render() {
     return(
       <div className="catch-of-the-day">
