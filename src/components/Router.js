@@ -4,6 +4,7 @@ import StorePicker from './StorePicker';
 import App from './App';
 import NotFound from './NotFound';
 
+// STATELESS FUNCTIONAL COMPONENT
 const Router = () => (
   <BrowserRouter>
     <Switch>
