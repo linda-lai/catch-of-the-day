@@ -9,18 +9,42 @@ import base from '../base';
 
 class App extends React.Component {
   state = {
+    // Persistent storage through Firebire
     fishes: {},
+    // Persistent storage through Local Storage, storing in the browser
     order: {}
   };
 
+  // Firebase will link to the database in real time whenever the component is mounted
   componentDidMount() {
     const { params } = this.props.match;
+    // First, reinstate our Local Storage
+    const localStorageRef = localStorage.getItem(params.storeId);
+    if(localStorageRef) {
+      this.setState({ order: JSON.parse(localStorageRef) });
+    }
+    
     this.ref = base.syncState(`${params.storeId}/fishes`, {
       context: this,
       state: 'fishes'
     });
-    console.log('MOUNTED!')
+    console.log("COMPONENT DID MOUNT!")
   }
+
+  componentDidUpdate() {
+    console.log(this.state.order)
+    localStorage.setItem(
+      this.props.match.params.storeId,
+      JSON.stringify(this.state.order)
+    );
+    console.log("COMPONENT DID UPDATE!")
+  }
+
+  // Firebase will unmount the component cleanly whenever the URL changes
+  componentWillUnmount() {
+    base.removeBinding(this.ref)
+    console.log("COMPONENT UNMOUNTED!")
+  };
 
   addFish = (fish) => {
     // 1. Take a copy of the existing state using an object spread
