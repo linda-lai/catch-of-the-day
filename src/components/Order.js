@@ -6,6 +6,8 @@ class Order extends React.Component {
     const fish = this.props.fishes[key];
     const count = this.props.order[key];
     const isAvailable = fish && fish.status === 'available';
+
+    // Using react-transition-group: an easy way to perform animations when a React component enters or leaves the DOM 
     const transitionOptions = {
       classNames: "order",
       key: key,
@@ -18,11 +20,7 @@ class Order extends React.Component {
     
     if(!isAvailable) {
       return(
-        <CSSTransition
-          classNames="order"
-          key={key}
-          timeout={{enter: 500, exit: 500}}
-        >
+        <CSSTransition {...transitionOptions} >
           <li key={key}>
             Sorry, {fish ? fish.name : 'Fish'} is no longer available
           </li>
@@ -30,11 +28,7 @@ class Order extends React.Component {
       );
     }
     return (
-      <CSSTransition
-        classNames="order"
-        key={key}
-        timeout={{ enter: 500, exit: 500 }}
-      >
+      <CSSTransition {...transitionOptions} >
         <li key={key}>
           <span>
             <TransitionGroup

@@ -13,7 +13,6 @@
   padding: 2rem 0 !important;
 }
 .order-exit {
-  background: #d8bfd8;
   -webkit-transition: 0.5s;
   transition: 0.5s;
   -webkit-transform: translateX(0);
@@ -25,8 +24,8 @@
   padding: 0;
 }
 .count-enter {
-  -webkit-transition: 5s;
-  transition: 5s;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
   -webkit-transform: translateY(100%);
           transform: translateY(100%);
 }
