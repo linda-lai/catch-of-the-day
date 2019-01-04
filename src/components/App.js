@@ -9,7 +9,7 @@ import base from '../base';
 
 class App extends React.Component {
   state = {
-    // Persistent storage through Firebire
+    // Persistent storage through Firebase
     fishes: {},
     // Persistent storage through Local Storage, storing in the browser
     order: {}
@@ -18,8 +18,9 @@ class App extends React.Component {
   // Firebase will link to the database in real time whenever the component is mounted
   componentDidMount() {
     const { params } = this.props.match;
-    // First, reinstate our Local Storage
+    // Check and reinstate our Local Storage if it exists whenever component is mounted so it doesn't keep resetting
     const localStorageRef = localStorage.getItem(params.storeId);
+    // If there is a localStorageRef, update order object (convert from string back to object)
     if(localStorageRef) {
       this.setState({ order: JSON.parse(localStorageRef) });
     }
@@ -31,8 +32,10 @@ class App extends React.Component {
     console.log("COMPONENT DID MOUNT!")
   }
 
+  // Invoked immediately after update occurs
   componentDidUpdate() {
     console.log(this.state.order)
+    // The setItem() method of the Storage interface, when passed a key name and value, will add that key to the given Storage object, or update that key's value if it already exists.
     localStorage.setItem(
       this.props.match.params.storeId,
       JSON.stringify(this.state.order)
@@ -55,6 +58,24 @@ class App extends React.Component {
     this.setState({ fishes });
   };
 
+  updateFish = (key, updatedFish) => {
+    // 1. Take a copy of the current state
+    const fishes = { ...this.state.fishes };
+    // 2. Update that state
+    fishes[key] = updatedFish;
+    // 3. Set that to state
+    this.setState({ fishes })
+  }
+
+  deleteFish = (key) => {
+    // 1. Take a copy of state
+    const fishes = { ...this.state.fishes };
+    // 2. Update the state (remove an entry, as Firebase needs it to be set to null)
+    fishes[key] = null;
+    // 3. 
+    this.setState({ fishes });
+  }
+
   loadSampleFishes = () => {
     this.setState({ fishes: sampleFishes})
   };
@@ -62,11 +83,20 @@ class App extends React.Component {
   addToOrder = (key) => {
     // 1. Take a copy of state
     const order = { ...this.state.order };
-    // 2. Either add to the order, or update the number in our order
+    // 2. Add that item to order
     order[key] = order[key] + 1 || 1;
     // 3. Call setState to update our state object
     this.setState({ order });
   };
+
+  removeFromOrder = key => {
+    // 1. Take a copy of state
+    const order = { ...this.state.order };
+    // 2. Remove that item from order 
+    delete order[key]
+    // 3. Call setState to update our state object
+    this.setState({ order })
+  }
 
   render() {
     return(
@@ -88,10 +118,14 @@ class App extends React.Component {
           <Order
             fishes={this.state.fishes}
             order={this.state.order}
+            removeFromOrder={this.removeFromOrder}
           />
           <Inventory
             addFish={this.addFish}
+            updateFish={this.updateFish}
+            deleteFish={this.deleteFish}
             loadSampleFishes={this.loadSampleFishes}
+            fishes={this.state.fishes}
           />
       </div>
     )
