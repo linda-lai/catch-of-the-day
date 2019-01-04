@@ -1,4 +1,5 @@
 import React, { Component, Fragment} from 'react';
+import PropTypes from 'prop-types';
 import { getFunName } from '../helpers';
 
 class StorePicker extends Component {
@@ -11,6 +12,10 @@ class StorePicker extends Component {
   // }
 
   myInput = React.createRef();
+
+  static propTypes = {
+    history: PropTypes.object
+  }
 
   // 'this' can be bound using arrow functions instead of constructor
   // Must be used when a custom method needs to access 'this'

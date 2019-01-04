@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 // STATELESS FUNCTIONAL COMPONENT
 const Header = (props) => (
@@ -17,6 +18,13 @@ const Header = (props) => (
   </header>
 );
 
+// VALIDATIONS USING PROP TYPES
+Header.propTypes = {
+  tagline: PropTypes.string.isRequired
+}
+
+export default Header;
+
 // // REACT CLASS COMPONENT
 // class Header extends React.Component {
 //   render() {
@@ -30,5 +38,3 @@ const Header = (props) => (
 //     )
 //   }
 // }
-
-export default Header;

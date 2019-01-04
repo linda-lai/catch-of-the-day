@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Header from './Header';
 import Order from './Order';
 import Inventory from './Inventory';
@@ -14,6 +15,10 @@ class App extends React.Component {
     // Persistent storage through Local Storage, storing in the browser
     order: {}
   };
+
+  static propTypes = {
+    match: PropTypes.object
+  }
 
   // Firebase will link to the database in real time whenever the component is mounted
   componentDidMount() {
